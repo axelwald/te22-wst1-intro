@@ -1,14 +1,19 @@
 import express from 'express'
 import nj from "nunjucks"
+import morgan from 'morgan' 
+
+import indexRouter from "./routes/index.js"
 
 const app = express()
 nj.configure("views", {
     autoescape: true,
     express: app,
 })
+
 app.use(express.static("public"))
+app.use(morgan("dev"))
 
-
+app.use("/",indexRouter)
 
 app.get("/", (request,response) => {
     const name = request.query.name
@@ -58,6 +63,12 @@ app.get("/ytub", (req,res) => {
         id: id
     })
     // res.json(movie)
+})
+
+app.use((req,res)=>{
+    res.status(404).render("404.njk", {
+        title: "404 - Not found",
+    })
 })
 app.listen(3000, () => {
     console.log("Server is running on https://localhost:3000")
