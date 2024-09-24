@@ -3,6 +3,7 @@ import nj from "nunjucks"
 import morgan from 'morgan' 
 
 import indexRouter from "./routes/index.js"
+import searchRouter from "./routes/search.js"
 
 const app = express()
 nj.configure("views", {
@@ -13,7 +14,8 @@ nj.configure("views", {
 app.use(express.static("public"))
 app.use(morgan("dev"))
 
-app.use("/",indexRouter)
+
+app.use("/search", searchRouter)
 
 app.get("/", (request,response) => {
     const name = request.query.name
